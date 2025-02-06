@@ -6,23 +6,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class CustomerController {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
+
 
     @Autowired
-    public CustomerController(CustomerRepository customerRepository){
-        this.customerRepository = customerRepository;
+    public CustomerController(CustomerService customerService){
+        this.customerService = customerService;
     }
 
-    @GetMapping("customer/{id}")
-    public Customer getCustomerById(@PathVariable Long id){
-        return customerRepository.findById(id).orElse(null);
+    @GetMapping("/customer/{id}")
+    public CustomerDTO getCustomer(@PathVariable Long id){
+        return customerService.getCustomerById(id);
     }
 
-    @GetMapping("customers/")
-    public Customer getCustomers(){
-        return null;
+    @GetMapping("/customers")
+    public List<CustomerDTO> getCustomers(){
+        return customerService.getAllCustomers();
     }
 }
